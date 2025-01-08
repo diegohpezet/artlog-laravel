@@ -52,10 +52,10 @@ const submit = () => {
     <p class="text-center text-muted">Or login using</p>
     <div class="text-center">
       <div>
-        <a href="/auth/google/redirect" class="btn-google rounded mb-3"><i class="bi bi-google me-3"></i>Google</a>
+        <a href="/auth/google/redirect" class="btn btn-google rounded mb-3"><i class="bi bi-google me-3"></i>Google</a>
       </div>
       <div>
-        <a href="/auth/facebook/redirect" class="btn-facebook rounded mb-3"><i class="bi bi-facebook me-3"></i>Facebook</a>
+        <a href="/auth/facebook/redirect" class="btn btn-facebook rounded mb-3"><i class="bi bi-facebook me-3"></i>Facebook</a>
       </div>
     </div>
 
