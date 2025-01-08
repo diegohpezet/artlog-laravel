@@ -11,11 +11,13 @@ use Laravel\Socialite\Facades\Socialite;
 
 class SocialiteController extends Controller
 {
-  public function redirectToProvider($provider) {
+  public function redirectToProvider($provider)
+  {
     return Socialite::driver($provider)->redirect();
   }
 
-  public function handleProviderCallback($provider) {
+  public function handleProviderCallback($provider)
+  {
     $providerUser = Socialite::driver($provider)->user();
 
     $user = User::firstOrCreate([
@@ -27,6 +29,11 @@ class SocialiteController extends Controller
       'password' => Hash::make(Str::random(16)),
       'provider' => $provider
     ]);
+
+    if (is_null($user->email_verified_at)) {
+      $user->email_verified_at = now();
+      $user->save();
+    }
 
     Auth::login($user);
 
