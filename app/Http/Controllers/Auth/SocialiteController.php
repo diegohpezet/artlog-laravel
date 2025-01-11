@@ -18,7 +18,7 @@ class SocialiteController extends Controller
 
   public function handleProviderCallback($provider)
   {
-    $providerUser = Socialite::driver($provider)->user();
+    $providerUser = Socialite::driver($provider)->stateless()->user();
 
     $user = User::firstOrCreate([
       'provider_id' => $providerUser->getId(),
