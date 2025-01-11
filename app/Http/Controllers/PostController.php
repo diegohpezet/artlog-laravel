@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\StorePostRequest;
 use App\Http\Requests\UpdatePostRequest;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 
 class PostController extends Controller
@@ -47,7 +48,7 @@ class PostController extends Controller
         $path = $validated['image']->store('uploads', 'public');
 
         $post = Post::create([
-            'image_url' => 'storage/' . $path,
+            'image_url' => Storage::url($path),
             'user_id' => $request->user()->id,
         ]);
 
