@@ -7,6 +7,7 @@ const props = defineProps({ user: Object });
 const form = useForm({
   avatar: props.user.avatar,
   username: props.user.username,
+  description: props.user.description || '',
 });
 
 const imageUrl = ref(props.user.avatar);
@@ -22,6 +23,7 @@ const handleImage = (e) => {
 const submit = () => {
   const formData = new FormData();
   formData.append('username', form.username);
+  formData.append('description', form.description);
 
   if (form.avatar) {
     formData.append('avatar', form.avatar);

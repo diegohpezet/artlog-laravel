@@ -25,6 +25,7 @@ class UpdateUserRequest extends FormRequest
         return [
             'avatar' => 'nullable|file|mimes:jpg,jpeg,png|max:2048',
             'username' => 'min:3|max:24|string|max:24|unique:users,username,' . Auth::user()->id,
+            'description' => 'nullable|string|max:255',
         ];
     }
 }

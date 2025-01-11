@@ -85,7 +85,7 @@ const toggleFollow = async () => {
   <div>
     <article>
       <h3 class="fw-bold">@{{ user.username }}</h3>
-      <p>No description provided yet</p>
+      <p>{{ user.description ?? 'No description provided yet' }}</p>
     </article>
   </div>
 </template>
