@@ -5,8 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\UpdateUserRequest;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 
 class UserController extends Controller
@@ -17,7 +17,7 @@ class UserController extends Controller
     public function index()
     {
         $hasUsername = request()->query('username') && strlen(request()->query('username')) > 3;
-        $users = $hasUsername ? 
+        $users = $hasUsername ?
             User::where('username', 'like', '%' . request()->query('username') . '%')->get() :
             User::all();
 
@@ -53,7 +53,7 @@ class UserController extends Controller
     public function edit($userIdentifier)
     {
         $user = User::where('id', $userIdentifier)->orWhere('username', $userIdentifier)->firstOrFail();
-        
+
         if (Auth::user()->id !== $user->id) {
             return redirect()->back();
         }
@@ -68,9 +68,18 @@ class UserController extends Controller
      */
     public function update(UpdateUserRequest $request, User $user)
     {
-        $user->update($request->all());
+        $user->username = $request->username;
 
-        return redirect()->route('users.show', $user);
+        if ($request->hasFile('avatar')) {
+            $file = $request->file('avatar');
+            $filename = $user->id . '.' . $file->getClientOriginalExtension();
+            $path = $file->storeAs('avatars', $filename, 'public');
+            $user->avatar = Storage::url($path);
+        }
+
+        $user->save();
+
+        return redirect()->route('users.show', $user->username);
     }
 
     /**

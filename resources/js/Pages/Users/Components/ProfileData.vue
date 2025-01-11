@@ -41,7 +41,7 @@ const toggleFollow = async () => {
 
     <div class="col-3">
       <figure class="position-relative">
-        <img :src="user.avatar" alt="" class="rounded-circle shadow-sm border border-3"
+        <img :src="user.avatar" alt="" class="rounded-circle shadow-sm border border-3 object-fit-cover"
           style="width: 140px; height: 140px;">
         <Link v-if="currentUser?.id === user.id" :href="'/users/' + user.username + '/edit'" class="btn btn-light border rounded-circle edit-btn">
           <i class="bi bi-pencil-fill my-2"></i>

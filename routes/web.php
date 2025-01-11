@@ -8,9 +8,8 @@ use App\Http\Controllers\FollowController;
 use App\Http\Controllers\LikeController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\PostController;
-use Illuminate\Foundation\Auth\EmailVerificationRequest;
-use Illuminate\Http\Request;
-use Inertia\Inertia;
+use App\Http\Requests\UpdateUserRequest;
+use App\Models\User;
 
 Route::get('/', [PostController::class, 'index'])->name('posts.index');
 
@@ -53,4 +52,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/users/{user}/following', [FollowController::class, 'following'])->name('users.following');
     Route::post('/users/{user}/follow', [FollowController::class, 'follow'])->name('users.follow');
     Route::delete('/users/{user}/follow', [FollowController::class, 'unfollow'])->name('users.unfollow');
+
+    // Update user
+    Route::post('/users/{user}', [UserController::class, 'update'])->name('users.update');
 });

@@ -23,9 +23,8 @@ class UpdateUserRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'avatar' => 'nullable|string',
-            // 'avatar' => 'nullable|file|mimes:jpg,jpeg,png|max:2048',
-            'username' => 'required|string|max:24|unique:users,username,' . $this->route('user')->id,
+            'avatar' => 'nullable|file|mimes:jpg,jpeg,png|max:2048',
+            'username' => 'min:3|max:24|string|max:24|unique:users,username,' . Auth::user()->id,
         ];
     }
 }
