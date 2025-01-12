@@ -20,11 +20,16 @@ class SocialiteController extends Controller
   {
     $providerUser = Socialite::driver($provider)->stateless()->user();
 
+    $timesUsernameTaken = User::where('username', $providerUser->getName())->count();
+    $isUsernameTaken = $timesUsernameTaken > 0;
+
     $user = User::firstOrCreate([
       'provider_id' => $providerUser->getId(),
     ], [
       'email' => $providerUser->getEmail(),
-      'username' => $providerUser->getName(),
+      'username' => $isUsernameTaken
+        ? $providerUser->getName() . ' ' . $timesUsernameTaken
+        : $providerUser->getName(),
       'avatar' => $providerUser->getAvatar(),
       'password' => Hash::make(Str::random(16)),
       'provider' => $provider
