@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
-use Illuminate\Http\Request;
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\RegisterRequest;
 use Illuminate\Support\Facades\Auth;
@@ -13,7 +12,8 @@ use Inertia\Inertia;
 
 class AuthController extends Controller
 {
-  public function showLoginForm() {
+  public function showLoginForm()
+  {
     return Inertia::render('Auth/Login');
   }
 
@@ -50,22 +50,10 @@ class AuthController extends Controller
     return redirect('/auth/email/verify');
   }
 
-  public function logout(Request $request)
+  public function logout()
   {
     Auth::logout();
 
     return redirect('/');
-  }
-
-  public function showResetForm()
-  {
-    return Inertia::render('Auth/SendRecoveryEmail');
-  }
-
-  public function sendRecoveryEmail(Request $request)
-  {
-    $request->validate(['email' => 'required|email']);
-
-    return back()->with('status', 'We have e-mailed your password reset link!');
   }
 }

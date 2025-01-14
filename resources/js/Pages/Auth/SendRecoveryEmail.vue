@@ -1,12 +1,19 @@
 <script setup>
 import { useForm } from '@inertiajs/vue3';
+import { ref } from 'vue';
 
 const form = useForm({
   email: "",
 });
 
+const message = ref("");
 const submit = () => {
-  form.post('/auth/send-recovery-email');
+  form.post('/auth/send-recovery-email', {
+    onSuccess: () => {
+      form.reset();
+      message.value = "We've emailed you instructions for setting your password, if an account exists with the email you entered. You should receive them shortly.";
+    }
+  });
 };
 </script>
 
@@ -21,10 +28,12 @@ const submit = () => {
             <span class="input-group-text"><i class="bi bi-envelope-fill"></i></span>
             <input type="email" class="form-control" placeholder="Mail" aria-label="Mail" v-model="form.email">
           </div>
-          <span class="text-danger" v-if="form.errors.email">{{ form.errors.email }}"></span>
+          <span class="text-danger" v-if="form.errors.email">{{ form.errors.email }}</span>
         </div>
 
-        <button class="btn btn-dark w-100 mt-3" type="submit">
+        <span class="text-muted text-center">{{ message }}</span>
+
+        <button class="btn btn-dark w-100 mt-3" type="submit" :disabled="form.processing">
           Send recovery email
         </button>
       </form>
