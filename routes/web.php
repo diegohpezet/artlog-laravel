@@ -3,13 +3,12 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Auth\AccountVerificationController;
+use App\Http\Controllers\Auth\PasswordRecoveryController;
 use App\Http\Controllers\Auth\SocialiteController;
 use App\Http\Controllers\FollowController;
 use App\Http\Controllers\LikeController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\PostController;
-use App\Http\Requests\UpdateUserRequest;
-use App\Models\User;
 
 Route::get('/', [PostController::class, 'index'])->name('posts.index');
 
@@ -31,8 +30,9 @@ Route::prefix('auth')->group(function () {
     Route::get('email/verify/{id}/{hash}', [AccountVerificationController::class, 'verify'])->middleware(['auth', 'signed'])->name('verification.verify');
     Route::post('email/verification-notification', [AccountVerificationController::class, 'resend'])->middleware(['auth', 'throttle:6,1'])->name('verification.send');
 
-    Route::get('forgot-password', [AuthController::class, 'showResetForm'])->name('password.reset');
-    Route::post('send-recovery-email', [AuthController::class, 'reset'])->name('password.reset.post');
+    Route::get('forgot-password', [PasswordRecoveryController::class, 'showResetForm'])->name('password.reset');
+    Route::post('send-recovery-email', [PasswordRecoveryController::class, 'sendRecoveryEmail'])->name('password.reset.post');
+    Route::post('reset-password', [PasswordRecoveryController::class, 'resetPassword'])->name('password.reset.post');
 
     // Socialite routes
     Route::get('/{provider}/redirect', [SocialiteController::class, 'redirectToProvider'])->name('socialite.redirect');
