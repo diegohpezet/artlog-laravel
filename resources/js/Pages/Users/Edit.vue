@@ -19,6 +19,15 @@ const handleImage = (e) => {
   }
 };
 
+const handleUsername = (e) => {
+  const cleanValue = e.target.value
+    .toLowerCase()
+    .replace(/[^a-z0-9._-]/g, '')
+    .replace(/\s+/g, '');
+
+  form.username = cleanValue;
+  e.target.value = cleanValue;
+};
 
 const submit = () => {
   const formData = new FormData();
@@ -56,7 +65,7 @@ const submit = () => {
           <!--Username and description-->
           <div class="mb-3">
             <label for="username" class="form-label">Username</label>
-            <input type="text" class="form-control" id="username" v-model="form.username">
+            <input type="text" class="form-control" id="username" v-model="form.username" @input="handleUsername">
             <span class="text-danger">{{ form.errors.username }}</span>
           </div>
 
