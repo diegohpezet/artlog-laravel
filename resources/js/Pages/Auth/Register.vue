@@ -9,6 +9,16 @@ const form = useForm({
   password_confirmation: ""
 });
 
+const handleUsername = (e) => {
+  const cleanValue = e.target.value
+    .toLowerCase()
+    .replace(/[^a-z0-9._-]/g, '')
+    .replace(/\s+/g, '');
+
+  form.username = cleanValue;
+  e.target.value = cleanValue;
+};
+
 const submit = () => {
   form.post('/auth/register');
   form.reset();
@@ -22,14 +32,14 @@ const submit = () => {
       style="bottom: -50px; left: -50px;">
     <img :src="'/assets/images/plant.png'" alt="plant" class="d-none d-md-block position-absolute img-small"
       style="bottom: -50px; right: -50px;">
-
     <form @submit.prevent="submit" class="w-100">
       <h3 class="text-center mb-4 text-uppercase">New Account?</h3>
 
       <div class="mb-3">
         <div class="input-group">
           <span class="input-group-text"><i class="bi bi-person-fill"></i></span>
-          <input type="text" class="form-control" placeholder="Username" aria-label="Username" v-model="form.username">
+          <input type="text" class="form-control" placeholder="Username" aria-label="Username" autofocus
+            v-model="form.username" @input="handleUsername">
         </div>
         <div v-if="form.errors.username" class="text-danger">{{ form.errors.username }}</div>
       </div>
