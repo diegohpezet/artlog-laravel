@@ -20,16 +20,21 @@ class SocialiteController extends Controller
   {
     $providerUser = Socialite::driver($provider)->stateless()->user();
 
-    $timesUsernameTaken = User::where('username', $providerUser->getName())->count();
+    $username = strtolower($providerUser->getName()); // Convertir a minúsculas
+    $username = preg_replace('/[^a-z0-9._-]/', '', $username);
+
+    $timesUsernameTaken = User::where('username', 'like', "$username%")->count();
     $isUsernameTaken = $timesUsernameTaken > 0;
+
+    $normalizedUsername = $isUsernameTaken
+      ? $username . $timesUsernameTaken
+      : $username;
 
     $user = User::firstOrCreate([
       'provider_id' => $providerUser->getId(),
     ], [
       'email' => $providerUser->getEmail(),
-      'username' => $isUsernameTaken
-        ? $providerUser->getName() . ' ' . $timesUsernameTaken
-        : $providerUser->getName(),
+      'username' => $normalizedUsername,
       'avatar' => $providerUser->getAvatar(),
       'password' => Hash::make(Str::random(16)),
       'provider' => $provider
