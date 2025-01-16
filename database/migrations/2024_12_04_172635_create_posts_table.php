@@ -15,6 +15,7 @@ return new class extends Migration
         Schema::create('posts', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->string('image_url');
+            $table->text('description')->nullable();
             $table->foreignUuid('user_id')->cascadeOnDelete();
             $table->timestamps();
         });

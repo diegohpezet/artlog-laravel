@@ -19,6 +19,7 @@ class PostFactory extends Factory
     {
         return [
             'image_url' => 'https://picsum.photos/' . rand(800, 1600) . '/' . rand(800, 1600),
+            'description' => fake()->sentence(),
             'user_id' => User::query()->inRandomOrder()->value('id') ?? User::factory(),
         ];
     }

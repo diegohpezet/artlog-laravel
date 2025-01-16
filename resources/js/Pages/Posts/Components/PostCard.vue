@@ -30,10 +30,9 @@ function handleImageLoad() {
         </section>
       </div>
 
-      <p class="px-3">Lorem ipsum dolor sit amet consectetur adipisicing elit. Doloribus, atque. Dolores voluptate nihil
-        natus!</p>
+      <p class="px-3">{{ post.description }}</p>
 
-      <section name="image" class="post-image p-3 text-center">
+      <section name="image" class="post-image px-3 pb-3 text-center">
         <Link :href="'/posts/' + post.id">
           <div v-if="!imageLoaded" class="spinner-border text-dark" role="status"></div>
           <img

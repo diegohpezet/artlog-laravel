@@ -54,6 +54,7 @@ class PostController extends Controller
 
         $post = Post::create([
             'image_url' => Storage::url($path),
+            'description' => $validated['description'],
             'user_id' => $request->user()->id,
         ]);
 

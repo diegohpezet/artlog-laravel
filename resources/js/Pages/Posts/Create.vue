@@ -3,13 +3,14 @@ import { ref } from 'vue';
 import { useForm } from '@inertiajs/vue3';
 
 const image = ref(null);
-const form = useForm({ image: null });
+const form = useForm({ image: null, description: '' });
 
 const handleImageChange = (e) => {
   const file = e.target.files[0];
   if (file) {
     form.image = file;
     image.value = URL.createObjectURL(file);
+
   }
 };
 
@@ -41,9 +42,16 @@ const submit = () => {
 
         <input type="file" id="image" class="d-none" accept="image/*" @change="handleImageChange" />
 
+        <span class="text-danger" v-if="form.errors.image">{{ form.errors.image }}</span>
       </div>
+
+      <div :class="'mb-3' + ''">
+        <label for="description" class="form-label">Write something about your picture</label>
+        <input type="text" class="form-control" id="description" placeholder="This is my wonderful picture!" v-model="form.description">
+        <span class="text-danger" v-if="form.errors.description">{{ form.errors.description }}</span>
+      </div>
+
       <button type="submit" class="btn btn-dark w-100" :disabled="form.processing">Submit</button>
-      <span class="text-danger" v-if="form.errors.image">{{ form.errors.image }}</span>
     </form>
   </div>
 </template>
