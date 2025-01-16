@@ -1,41 +1,63 @@
 <script setup>
 import { Link } from '@inertiajs/vue3';
 import LikeBtn from './LikeBtn.vue';
+import { ref } from 'vue';
 
 const props = defineProps({ post: Object });
+
+const imageLoaded = ref(false);
+const imageSrc = ref('');
+
+imageSrc.value = props.post.image_url;
+
+function handleImageLoad() {
+  imageLoaded.value = true;
+}
 </script>
+
 
 <template>
   <div class="card">
     <div class="card-body p-0">
-      <div class="user-info">
-        <img :src="post.user.avatar" :alt="post.user.username">
-        <Link :href="'/users/' + post.user.username">{{ post.user.username }}</Link>
+      <div class="d-flex justify-content-between">
+        <section name="user" class="user-info">
+          <img :src="post.user.avatar" :alt="post.user.username">
+          <Link :href="'/users/' + post.user.username">{{ post.user.username }}</Link>
+        </section>
+
+        <section class="actions">
+          <LikeBtn :post="post" />
+        </section>
       </div>
 
-      <div class="post-image">
+      <p class="px-3">Lorem ipsum dolor sit amet consectetur adipisicing elit. Doloribus, atque. Dolores voluptate nihil
+        natus!</p>
+
+      <section name="image" class="post-image p-3 text-center">
         <Link :href="'/posts/' + post.id">
-          <img :src="post.image_url" class="w-100 rounded" alt="Post image">
+          <div v-if="!imageLoaded" class="spinner-border text-dark" role="status"></div>
+          <img
+            v-show="imageLoaded"
+            :src="imageSrc"
+            class="w-100 rounded"
+            alt="Post image"
+            @load="handleImageLoad"
+          >
         </Link>
-      </div>
-
-      <div class="actions">
-        <LikeBtn :post="post" />
-      </div>
+      </section>
     </div>
   </div>
 </template>
+
 
 <style scoped lang="scss">
 .card {
   position: relative;
 
   .user-info {
-    display: none;
-    position: absolute;
-    top: 0;
-    left: 0;
-    padding: 5px;
+    display: flex;
+    align-items: center;
+    padding: 10px;
     filter: none;
     z-index: 10;
 
@@ -47,7 +69,7 @@ const props = defineProps({ post: Object });
     }
 
     a {
-      color: #fff;
+      color: #000;
       font-size: 16px;
       font-weight: 500;
       text-decoration: none;
@@ -59,23 +81,10 @@ const props = defineProps({ post: Object });
   }
 
   .actions {
-    display: none;
-    position: absolute;
-    bottom: 0;
-    right: 0;
-    padding: 5px;
-    z-index: 10;
+    padding: 10px;
   }
 
   &:hover {
-
-    .user-info,
-    .actions {
-      display: block;
-    }
-
-    ;
-
     .post-image img {
       filter: brightness(75%);
     }
