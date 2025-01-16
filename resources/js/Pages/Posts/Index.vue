@@ -27,7 +27,7 @@ const handleScroll = () => {
   }
 };
 
-onMounted(() => { 
+onMounted(() => {
   window.addEventListener('scroll', handleScroll);
 });
 
@@ -37,24 +37,26 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <div class="container mt-3 w-50 mx-auto">
-    <nav class="mb-3">
-      <!-- Filter tabs -->
-      <ul class="nav">
-        <li class="nav-item">
-          <Link class="nav-link" :href="'/'">All</Link>
-        </li>
-        <li class="nav-item">
-          <Link class="nav-link" :href="'/posts/filter/following'">Following</Link>
-        </li>
-      </ul>
-    </nav>
+  <div class="container mt-3 d-flex justify-content-center">
+    <div class="wrapper">
+      <nav class="mb-3">
+        <!-- Filter tabs -->
+        <ul class="nav">
+          <li class="nav-item">
+            <Link class="nav-link" :href="'/'">All</Link>
+          </li>
+          <li class="nav-item">
+            <Link class="nav-link" :href="'/posts/filter/following'">Following</Link>
+          </li>
+        </ul>
+      </nav>
 
-    <!-- Post cards -->
-    <main class="d-flex flex-wrap">
-      <div class="p-3 w-100" v-for="post in localPosts.data" :key="post.id">
-        <PostCard :post />
-      </div>
-    </main>
+      <!-- Post cards -->
+      <main>
+        <div class="p-3" style="max-width: 768px;" v-for="post in localPosts.data" :key="post.id">
+          <PostCard :post />
+        </div>
+      </main>
+    </div>
   </div>
 </template>
