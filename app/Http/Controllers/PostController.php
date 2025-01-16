@@ -6,6 +6,7 @@ use App\Models\Post;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StorePostRequest;
 use App\Http\Requests\UpdatePostRequest;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
@@ -15,18 +16,22 @@ class PostController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index($filter = null)
+    public function index(Request $request, $filter = null)
     {
         $postsQuery = Post::with(['user', 'likes']);
 
         if ($filter === 'following') {
             $postsQuery->whereIn('user_id', Auth::user()->follows->pluck('followed_id'));
         }
-        
-        $posts = $postsQuery->get();
+
+        $posts = $postsQuery->latest()->paginate(10);
+
+        if ($request->wantsJson()) {
+            return $posts;
+        }
 
         return Inertia::render('Posts/Index', [
-            'posts' => $posts
+            'posts' => $posts,
         ]);
     }
 

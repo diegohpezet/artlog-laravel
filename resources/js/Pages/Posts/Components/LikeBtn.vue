@@ -28,7 +28,7 @@ const toggleLike = async () => {
 </script>
 
 <template>
-  <button :class="`btn btn-outline-light w-100 ${!user ? 'disabled' : ''}`" @click="toggleLike">
+  <button :class="`btn btn-outline-dark w-100 ${!user ? 'disabled' : ''}`" @click="toggleLike">
     <i v-if="!isLiked" class="bi bi-heart me-2"></i>
     <i v-else class="bi bi-heart-fill me-2"></i>
     {{ likeCount }}
