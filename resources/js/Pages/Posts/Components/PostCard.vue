@@ -2,6 +2,7 @@
 import { Link } from '@inertiajs/vue3';
 import LikeBtn from './LikeBtn.vue';
 import { ref } from 'vue';
+import PostComments from './PostComments.vue';
 
 const props = defineProps({ post: Object });
 
@@ -43,6 +44,10 @@ function handleImageLoad() {
             @load="handleImageLoad"
           >
         </Link>
+      </section>
+
+      <section name="comments" class="px-3">
+        <PostComments :post="post" />
       </section>
     </div>
   </div>
