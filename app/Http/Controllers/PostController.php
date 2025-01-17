@@ -18,7 +18,7 @@ class PostController extends Controller
      */
     public function index(Request $request, $filter = null)
     {
-        $postsQuery = Post::with(['user', 'likes']);
+        $postsQuery = Post::with(['user', 'likes', 'comments']);
 
         if ($filter === 'following') {
             $postsQuery->whereIn('user_id', Auth::user()->follows->pluck('followed_id'));
