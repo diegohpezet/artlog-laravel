@@ -5,6 +5,7 @@ use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Auth\AccountVerificationController;
 use App\Http\Controllers\Auth\PasswordRecoveryController;
 use App\Http\Controllers\Auth\SocialiteController;
+use App\Http\Controllers\CommentController;
 use App\Http\Controllers\FollowController;
 use App\Http\Controllers\LikeController;
 use App\Http\Controllers\UserController;
@@ -52,6 +53,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/users/{user}/following', [FollowController::class, 'following'])->name('users.following');
     Route::post('/users/{user}/follow', [FollowController::class, 'follow'])->name('users.follow');
     Route::delete('/users/{user}/follow', [FollowController::class, 'unfollow'])->name('users.unfollow');
+
+    // Comment routes
+    Route::post('/posts/{post}/comments', [CommentController::class, 'store'])->name('comments.store');
 
     // Update user
     Route::post('/users/{user}', [UserController::class, 'update'])->name('users.update');

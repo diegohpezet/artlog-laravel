@@ -7,7 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\DeleteCommentRequest;
 use App\Http\Requests\StoreCommentRequest;
 use App\Http\Requests\UpdateCommentRequest;
-use Illuminate\Http\Request;
+use App\Models\Post;
 use Illuminate\Support\Facades\Auth;
 
 class CommentController extends Controller
@@ -15,15 +15,15 @@ class CommentController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreCommentRequest $request)
+    public function store(StoreCommentRequest $request, Post $post)
     {
         $comment = Comment::create([
-            'post_id' => $request->post_id,
-            'user_id' => $request->user_id,
+            'post_id' => $post->id,
+            'user_id' => Auth::user()->id,
             'body' => $request->body
         ]);
 
-        return $comment;
+        return response()->json($comment->load('user'), 201);
     }
 
     /**

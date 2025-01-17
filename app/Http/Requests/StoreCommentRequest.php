@@ -24,8 +24,6 @@ class StoreCommentRequest extends FormRequest
     {
         return [
             'body' => 'required|string|max:255',
-            'post_id' => 'required|exists:posts,id',
-            'user_id' => 'required|exists:users,id',
         ];
     }
 }
