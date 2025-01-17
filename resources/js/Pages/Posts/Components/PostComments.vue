@@ -1,4 +1,5 @@
 <script setup>
+import serverRequest from '../../../Utils/serverRequest';
 import Comment from './Comment.vue';
 import CommentForm from './CommentForm.vue';
 import { reactive } from 'vue';
@@ -9,6 +10,17 @@ const post = reactive(props.post);
 const addComment = (comment) => {
   post.comments = [...post.comments, comment];
 };
+
+const showDeleteModal = (comment) => {
+  if (confirm('Are you sure you want to delete this comment?')) {
+    deleteComment(comment);
+  }
+}
+
+const deleteComment = (comment) => {
+  serverRequest(`/comments/${comment.id}`, 'DELETE');
+  post.comments = post.comments.filter((c) => c.id !== comment.id);
+}
 </script>
 
 <template>
@@ -16,7 +28,7 @@ const addComment = (comment) => {
   <CommentForm :post="post" @comment-created="addComment"/>
   <ul class="list-group list-group-flush">
     <li class="list-group-item list-group-item-action" v-for="comment in post.comments" :key="comment.id">
-      <Comment :comment="comment" />
+      <Comment :comment="comment" @comment-delete="showDeleteModal"/>
     </li>
   </ul>
 </template>
