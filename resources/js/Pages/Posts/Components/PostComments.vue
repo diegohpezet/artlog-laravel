@@ -11,11 +11,13 @@ const addComment = (comment) => {
   post.comments = [...post.comments, comment];
 };
 
-const showDeleteModal = (comment) => {
-  if (confirm('Are you sure you want to delete this comment?')) {
-    deleteComment(comment);
+const editComment = (updatedComment) => {
+  serverRequest(`/comments/${updatedComment.id}`, 'PUT', updatedComment);
+  const index = post.comments.findIndex((comment) => comment.id === updatedComment.id);
+  if (index !== -1) {
+    post.comments[index] = updatedComment;
   }
-}
+};
 
 const deleteComment = (comment) => {
   serverRequest(`/comments/${comment.id}`, 'DELETE');
@@ -28,7 +30,11 @@ const deleteComment = (comment) => {
   <CommentForm :post="post" @comment-created="addComment"/>
   <ul class="list-group list-group-flush">
     <li class="list-group-item list-group-item-action" v-for="comment in post.comments" :key="comment.id">
-      <Comment :comment="comment" @comment-delete="showDeleteModal"/>
+      <Comment 
+        :comment="comment"
+        @comment-delete="deleteComment"
+        @comment-edit="editComment"
+      />
     </li>
   </ul>
 </template>

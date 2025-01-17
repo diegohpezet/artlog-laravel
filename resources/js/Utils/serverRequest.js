@@ -5,6 +5,6 @@ export default function serverRequest(url, method, data = {}) {
       'Content-Type': 'application/json',
       'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
     },
-    body: JSON.stringify({ body: data })
+    body: JSON.stringify(data)
   })
 }

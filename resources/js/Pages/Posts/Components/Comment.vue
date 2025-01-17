@@ -1,5 +1,6 @@
 <script setup>
-import { Link, usePage } from '@inertiajs/vue3';
+import { ref } from 'vue';
+import { Link, usePage, useForm } from '@inertiajs/vue3';
 import useTimeAgo from '../../../Utils/useTimeAgo';
 
 const props = defineProps({ comment: Object });
@@ -9,6 +10,26 @@ const page = usePage();
 const currentUser = page.props.auth.user;
 
 const timeSinceCreated = useTimeAgo(props.comment.created_at);
+
+const form = useForm({
+  body: props.comment.body,
+});
+
+const isEditing = ref(false);
+const handleCommentEdit = () => {
+  isEditing.value = true;
+};
+
+const handleEditSubmit = () => {
+  emit('comment-edit', { ...props.comment, body: form.body });
+  isEditing.value = false;
+};
+
+const handleCommentDelete = () => {
+  if (confirm('Are you sure you want to delete this comment?')) {
+    emit('comment-delete', props.comment);
+  }
+};
 </script>
 
 <template>
@@ -20,17 +41,26 @@ const timeSinceCreated = useTimeAgo(props.comment.created_at);
     </div>
 
     <div class="d-flex justify-content-end dropdown" v-if="currentUser?.id === comment.user.id">
-      <button class="btn btn-sm btn-outline-dark rounded-circle border-0" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+      <button class="btn btn-sm btn-outline-dark rounded-circle border-0" type="button" data-bs-toggle="dropdown"
+        aria-expanded="false">
         <i class="bi bi-three-dots-vertical py-2"></i>
       </button>
       <ul class="dropdown-menu">
-        <li><button class="dropdown-item btn-light" type="button" @click="$emit('comment-edit', comment)">Edit</button></li>
-        <li><button class="dropdown-item btn-light" type="button" @click="$emit('comment-delete', comment)">Delete</button></li>
+        <li><button class="dropdown-item btn-light" type="button" @click="handleCommentEdit()">Edit</button></li>
+        <li><button class="dropdown-item btn-light" type="button" @click="handleCommentDelete()">Delete</button></li>
       </ul>
     </div>
   </div>
 
-  <p class="ms-5">{{ comment.body }}</p>
+  <p v-if="!isEditing" class="ms-5">{{ comment.body }}</p>
+
+  <form v-else @submit.prevent="handleEditSubmit" class="ms-5">
+    <div class="input-group">
+      <input type="text" class="form-control" placeholder="Comment..." v-model="form.body">
+      <button class="btn btn-outline-dark" type="submit" :disabled="form.processing">+</button>
+    </div>
+    <span v-if="form.errors.body" class="text-danger">{{ form.errors.body }}</span>
+  </form>
 </template>
 
 <style scoped>
