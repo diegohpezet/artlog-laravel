@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Comment;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\DeleteCommentRequest;
 use App\Http\Requests\StoreCommentRequest;
 use App\Http\Requests\UpdateCommentRequest;
 use Illuminate\Http\Request;
@@ -38,8 +39,10 @@ class CommentController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Comment $comment)
+    public function destroy(DeleteCommentRequest $request, Comment $comment)
     {
-        //
+        $comment->delete();
+
+        return response()->json(['message' => 'Comment deleted successfully']);
     }
 }
