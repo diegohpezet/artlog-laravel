@@ -35,7 +35,6 @@ class SocialiteController extends Controller
     ], [
       'email' => $providerUser->getEmail(),
       'username' => $normalizedUsername,
-      'avatar' => $providerUser->getAvatar(),
       'password' => Hash::make(Str::random(16)),
       'provider' => $provider
     ]);
