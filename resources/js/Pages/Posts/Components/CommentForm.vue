@@ -25,7 +25,6 @@ const submit = async () => {
   }
 
   const newComment = await response.json();
-  console.log(newComment)
   emit('comment-created', newComment);
   form.reset();
 };

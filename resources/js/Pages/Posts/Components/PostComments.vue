@@ -1,11 +1,15 @@
 <script setup>
+import { reactive } from 'vue';
+import { usePage } from '@inertiajs/vue3'
 import serverRequest from '../../../Utils/serverRequest';
 import Comment from './Comment.vue';
 import CommentForm from './CommentForm.vue';
-import { reactive } from 'vue';
 
 const props = defineProps({ post: Object });
 const post = reactive(props.post);
+
+const page = usePage();
+const user = page.props.auth.user;
 
 const addComment = (comment) => {
   post.comments = [...post.comments, comment];
@@ -27,7 +31,7 @@ const deleteComment = (comment) => {
 
 <template>
   <h5>Comments ({{ post.comments.length }})</h5>
-  <CommentForm :post="post" @comment-created="addComment"/>
+  <CommentForm :post="post" @comment-created="addComment" v-if="user"/>
   <ul class="list-group list-group-flush">
     <li class="list-group-item list-group-item-action" v-for="comment in post.comments" :key="comment.id">
       <Comment 
