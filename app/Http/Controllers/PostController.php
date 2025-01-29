@@ -18,7 +18,7 @@ class PostController extends Controller
      */
     public function index(Request $request, $filter = null)
     {
-        $postsQuery = Post::with(['user', 'likes']);
+        $postsQuery = Post::with(['user', 'likes', 'comments.user']);
 
         if ($filter === 'following') {
             $postsQuery->whereIn('user_id', Auth::user()->follows->pluck('followed_id'));
@@ -66,7 +66,7 @@ class PostController extends Controller
      */
     public function show(Post $post)
     {
-        $post = $post->load(['user', 'likes']);
+        $post = $post->load(['user', 'likes', 'comments.user']);
 
         return Inertia::render('Posts/Show', [
             'post' => $post
