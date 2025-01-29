@@ -67,9 +67,11 @@ function handleImageLoad() {
 
     img {
       width: 38px;
+      height: 38px;
       margin-right: 5px;
       border-radius: 50%;
       border: 2px solid #fff;
+      object-fit: cover;
     }
 
     a {

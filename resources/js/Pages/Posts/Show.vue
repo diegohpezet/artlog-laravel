@@ -13,7 +13,7 @@ const user = page.props.auth.user;
 
     <section name="user" class="d-flex justify-content-between align-items-center mb-3">
       <Link :href="'/users/' + post.user.username" class="text-decoration-none">
-      <img :src="post.user.avatar" class="rounded-circle me-2" style="width: 45px; height: 45px;">
+      <img :src="post.user.avatar" class="rounded-circle me-2 object-fit-cover" style="width: 45px; height: 45px;">
       <span class="fw-bold text-dark">{{ post.user.username }}</span>
       </Link>
 
