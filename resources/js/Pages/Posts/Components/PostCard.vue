@@ -18,7 +18,7 @@ function handleImageLoad() {
 
 
 <template>
-  <div class="card">
+  <div class="card w-100">
     <div class="card-body p-0">
       <div class="d-flex justify-content-between">
         <section name="user" class="user-info">
